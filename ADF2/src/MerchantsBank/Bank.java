@@ -27,14 +27,21 @@ public class Bank {
 		n = Integer.parseInt(scan.nextLine());
 		
 		for(int i = 0; i < n; i++){
-			Account account = new Account();
+			Account account = new Account(); 
 			System.out.println("Enter customer name: ");
-			account.setCustomerName(scan.nextLine());
-			System.out.println("Enter account number");
-			account.setAccountNumber(scan.nextLine());
-			System.out.println("Enter account balance");
-			account.setAccountbalance(Double.parseDouble(scan.nextLine()));
+			do{
+				account.setCustomerName(scan.nextLine());
+			}while((account.getCustomerName() == null) || (account.getCustomerName().matches("[a-zA-Z]+") == false));
 			
+			System.out.println("Enter account number");
+			account.setAccountNumber(scan.nextLine());	
+									
+			System.out.println("Enter account balance");
+			
+			do{
+				account.setAccountbalance(Double.parseDouble(scan.nextLine()));				
+			}while(account.getAccountbalance() < 100);
+	
 			acc.add(account);
 		}
 	}
@@ -45,7 +52,36 @@ public class Bank {
 	}
 	
 	public void withdraw(){
-		
+		double amount;
+		if(acc.size() < 1){
+			System.err.println("No account have been created yet!");
+		}
+		for(int i = 0; i < acc.size(); i++){
+			String findAccount;
+			System.out.println("Enter the account number to withdraw: ");
+			try{
+				findAccount = scan.nextLine();
+					if(findAccount.length() < 1){
+						throw new NullPointerException();
+					}else if(!(findAccount.equalsIgnoreCase(acc.get(i).getAccountNumber()))){
+						System.err.println("Not found!");
+					}else if(findAccount.equalsIgnoreCase(acc.get(i).getAccountNumber())){
+						try{
+							System.out.println("Enter amount customer withdraw: ");
+							amount = Double.parseDouble(scan.nextLine());
+							if(amount > acc.get(i).getAccountbalance()){
+								throw new InsuffnoughFundsException("invalid!!!",acc.get(i).getAccountbalance(),amount);							
+						}
+							acc.get(i).setAccountbalance(acc.get(i).getAccountbalance() - amount);
+						}catch(InsuffnoughFundsException e){
+							
+						}
+					}
+				}
+				catch(NullPointerException e){
+					System.out.println("ko dc null");
+			}
+		}
 	}
 	
 	public void deposit(){

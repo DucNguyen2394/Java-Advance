@@ -16,17 +16,22 @@ public class Account {
 	public String getCustomerName() {
 		return customerName;
 	}
-	public void setCustomerName(String customerName) {
-		boolean check = false;
-		while(check){
-			try{
-				this.customerName = customerName;
-			}catch(NullPointerException e){
-				System.out.println("cant NULL!!!");
-				check = false;
+	
+	public boolean setCustomerName(String customerName) {
+			if(customerName.length() < 1 ){
+				System.err.println("Can't null");
+				return false;
 			}
-		}
+			else if(customerName.matches("[a-zA-Z]+") == false){
+				System.out.println("Does not contain number in the name");
+				return false;
+			}else{
+				this.customerName = customerName;
+				return true;			
+			}
+			
 	}
+	
 	public String getAccountNumber() {
 		return accountNumber;
 	}
@@ -36,8 +41,22 @@ public class Account {
 	public double getAccountbalance() {
 		return accountbalance;
 	}
-	public void setAccountbalance(double accountbalance) {
-		this.accountbalance = accountbalance;
+	
+	public boolean setAccountbalance(double accountbalance) {
+		try{
+			if(accountbalance < 100){
+				throw new InsuffnoughFundsException("Balance must be greater than 100",accountbalance,0);
+				
+			}else{
+				this.accountbalance = accountbalance;	
+				return true;
+			}
+		}catch(InsuffnoughFundsException e){
+			e.getMessage();
+		}catch(NumberFormatException e){
+			System.out.println("Balance is not String");
+		}
+		return true;
 	}
 	@Override
 	public String toString() {
