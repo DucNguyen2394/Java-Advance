@@ -22,7 +22,7 @@ public class Account {
 				System.err.println("Can't null");
 				return false;
 			}
-			else if(customerName.matches("[a-zA-Z]+") == false){
+			else if(customerName.matches("[a-z A-Z]+") == false){
 				System.out.println("Does not contain number in the name");
 				return false;
 			}else{

@@ -11,6 +11,7 @@ public class BankTest {
 		Scanner scan = new Scanner(System.in);
 		int choose;
 		do{
+			menu();
 			System.out.println("Choose ");
 			choose = Integer.parseInt(scan.nextLine());
 			switch(choose){
@@ -24,7 +25,7 @@ public class BankTest {
 				bank.withdraw();
 				break;
 			case 4:
-				
+				bank.deposit();
 				break;
 			case 5:
 				System.out.println("BYE ");

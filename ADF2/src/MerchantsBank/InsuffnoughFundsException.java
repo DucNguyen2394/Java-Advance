@@ -1,13 +1,18 @@
 package MerchantsBank;
 
+import java.util.ArrayList;
+
 public class InsuffnoughFundsException extends Exception {
 	
-	Account account;
-	public InsuffnoughFundsException(String s,double balance,double amount ){
+	public InsuffnoughFundsException(String s,double balance,double amount){
+		super();
 		if(balance < 100){
 			System.err.println(s);
 		}
 		if(amount > balance){
+			System.err.println(s);
+		}
+		if(amount <= 0){
 			System.err.println(s);
 		}
 	}

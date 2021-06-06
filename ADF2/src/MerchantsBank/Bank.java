@@ -31,7 +31,7 @@ public class Bank {
 			System.out.println("Enter customer name: ");
 			do{
 				account.setCustomerName(scan.nextLine());
-			}while((account.getCustomerName() == null) || (account.getCustomerName().matches("[a-zA-Z]+") == false));
+			}while((account.getCustomerName() == null) || (account.getCustomerName().matches("[a-z A-Z]+") == false));
 			
 			System.out.println("Enter account number");
 			account.setAccountNumber(scan.nextLine());	
@@ -73,6 +73,7 @@ public class Bank {
 								throw new InsuffnoughFundsException("invalid!!!",acc.get(i).getAccountbalance(),amount);							
 						}
 							acc.get(i).setAccountbalance(acc.get(i).getAccountbalance() - amount);
+							displayAccountDetails();
 						}catch(InsuffnoughFundsException e){
 							
 						}
@@ -85,6 +86,39 @@ public class Bank {
 	}
 	
 	public void deposit(){
+		double amount;
+		if(acc.size() < 1){
+			System.err.println("No account have been created yet!");
+		}
+		for(int i = 0; i < acc.size(); i++){
+			String findAccount;
+			System.out.println("Enter the account number to deposit: ");
+			try{
+				findAccount = scan.nextLine();
+					if(findAccount.length() < 1){
+						throw new NullPointerException();
+					}else if(!(findAccount.equalsIgnoreCase(acc.get(i).getAccountNumber()))){
+						System.err.println("Not found!");
+					}else if(findAccount.equalsIgnoreCase(acc.get(i).getAccountNumber())){
+						System.out.println("Enter amount customer deposit: ");
+						try {
+							amount = Double.parseDouble(scan.nextLine());
+						if(amount <= 0){
+								throw new InsuffnoughFundsException("invalid!!!",acc.get(i).getAccountbalance(),amount);
+						}
+							acc.get(i).setAccountbalance(acc.get(i).getAccountbalance() + amount);
+							displayAccountDetails();
+							} catch (InsuffnoughFundsException e) {
+								e.printStackTrace();
+							} catch (NumberFormatException e){
+								System.out.println("Amount not String");
+							}
+					}
+					
+			}catch(NullPointerException e){
+				System.out.println("ko dc null");
+			}
+		}
 		
 	}
 }
