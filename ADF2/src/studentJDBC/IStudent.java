@@ -1,10 +1,8 @@
 package com.assignments.studentJDBC;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface IStudent {
-    Connection getConnection();
 
     int createStudent();
 

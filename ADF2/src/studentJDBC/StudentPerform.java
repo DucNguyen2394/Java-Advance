@@ -5,37 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class StudentPerform implements IStudent{
+public class StudentPerform extends Connector implements IStudent{
     List<Student> studentList = new ArrayList<>();
-    public static void main(String[] args) {
-        StudentPerform sp = new StudentPerform();
-
-        //sp.createStudent();
-        sp.findAll();
-//        sp.updateStudent();
-        sp.searchStudent();
-//        sp.deleteStudent();
-    }
-
-
-    private static String url = "jdbc:mysql://localhost:3306/studentdemo";
-    private static String userName = "root";
-    private static String password = "ducnguyen@94";
 
     static Scanner scan = new Scanner(System.in);
-
-    @Override
-    public Connection getConnection() {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url,userName,password);
-            return conn;
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     @Override
     public int createStudent() {
@@ -60,10 +33,7 @@ public class StudentPerform implements IStudent{
                         ps.executeUpdate();
 
                         rs = ps.getGeneratedKeys();
-                        System.out.println("endRS");
                         studentList.add(student);
-                        System.out.println("endADD");
-                        System.out.println("end commit");
                     }
                     if(rs != null){
                         id = rs.getInt(1);
@@ -73,26 +43,11 @@ public class StudentPerform implements IStudent{
                  }catch (SQLException throwables) {
                     return Integer.parseInt(null);
                 } finally {
-                    try {
-                        if (rs != null){
-                            rs.close();
-                        }if (ps != null){
-                            ps.close();
-                        }if(conn != null){
-                            conn.close();
-                        }
-                    }catch (SQLException e){
-                        if(conn != null){
-                            try {
-                                conn.rollback();
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                        }
-                        return Integer.parseInt(null);
-                    }
+                    close(rs);
+                    close(ps);
+                    close(conn);
                 }
-            }
+        }
         return Integer.parseInt(null);
     }
 
@@ -123,17 +78,9 @@ public class StudentPerform implements IStudent{
                 throwables.printStackTrace();
                 return null;
             }finally {
-                try{
-                    if(rs != null){
-                        rs.close();
-                    }if (ps != null){
-                        ps.close();
-                    }if(conn != null){
-                        conn.close();
-                    }
-                }catch (SQLException e){
-                    return null;
-                }
+                close(rs);
+                close(ps);
+                close(conn);
             }
         }
         return null;
@@ -172,15 +119,8 @@ public class StudentPerform implements IStudent{
             } catch (SQLException throwables) {
                 return null;
             } finally {
-                try {
-                    if(ps != null){
-                        ps.close();
-                    }if(conn != null){
-                        conn.close();
-                    }
-                }catch (SQLException e){
-                    return null;
-                }
+                close(ps);
+                close(conn);
             }
         }
         return null;
@@ -220,6 +160,9 @@ public class StudentPerform implements IStudent{
             } catch (Exception throwables) {
                 throwables.printStackTrace();
                 return null;
+            }finally {
+                close(ps);
+                close(conn);
             }
         }
         return null;
@@ -254,6 +197,9 @@ public class StudentPerform implements IStudent{
                 return studentList;
             }catch (SQLException e){
                 return null;
+            }finally {
+                close(ps);
+                close(conn);
             }
         }
         return null;
