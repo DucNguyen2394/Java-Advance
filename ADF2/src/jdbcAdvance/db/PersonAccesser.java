@@ -1,7 +1,6 @@
 package com.assignments.jdbcAdvance.db;
 
 import com.assignments.jdbcAdvance.entity.Student;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ public class PersonAccesser extends Connector implements IStudent {
     List<Student> studentList = new ArrayList<>();
     static Scanner scan = new Scanner(System.in);
     int flag = 0;
-
     @Override
     public List<Student> findAll() {
         Connection conn = getConnection();
@@ -42,7 +40,6 @@ public class PersonAccesser extends Connector implements IStudent {
         }
         return null;
     }
-
     @Override
     public int insert() {
         Connection conn = getConnection();
@@ -81,7 +78,6 @@ public class PersonAccesser extends Connector implements IStudent {
         }
         return 0;
     }
-
     @Override
     public List<Student> updateById() {
         Connection conn = getConnection();
@@ -119,7 +115,6 @@ public class PersonAccesser extends Connector implements IStudent {
         }
         return null;
     }
-
     @Override
     public List<Student> deleteById() {
         Connection conn = getConnection();
@@ -135,7 +130,7 @@ public class PersonAccesser extends Connector implements IStudent {
                     if (std.getId() == n){
                         ps = conn.prepareStatement(sql);
                         ps.setInt(1, n);
-
+                        ps.executeUpdate();
                         System.out.println("Delete done!");
                         studentList.add(std);
                         flag = 1;
@@ -152,8 +147,6 @@ public class PersonAccesser extends Connector implements IStudent {
         }
         return null;
     }
-
-
     @Override
     public void searchById() {
         Connection conn = getConnection();
