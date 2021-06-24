@@ -58,7 +58,7 @@ public class AddressBooks {
         findName = scanner.nextLine();
         for (int i = 0; i < addressBooksArrayList.size(); i++){
             if(addressBooksArrayList.get(i).getName().equalsIgnoreCase(findName)){
-                display();
+                addressBooksArrayList.get(i).display();
                 flag = 1;
                 break;
             }
