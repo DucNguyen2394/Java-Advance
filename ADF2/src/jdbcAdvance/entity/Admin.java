@@ -1,5 +1,7 @@
 package com.assignments.jdbcAdvance.entity;
 
+import java.util.Scanner;
+
 public class Admin extends Person {
     private String username;
     private String password;
@@ -25,5 +27,13 @@ public class Admin extends Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void register(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter username: ");
+        username = scanner.nextLine();
+        System.out.println("Enter Password: ");
+        password = scanner.nextLine();
     }
 }

@@ -1,7 +1,9 @@
 package com.assignments.jdbcAdvance.db;
 
 import com.assignments.jdbcAdvance.entity.Admin;
-
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +30,6 @@ public class AdminAccesser extends Connector{
                     Admin admin = new Admin();
                     admin.setUsername(rs.getString("username"));
                     admin.setPassword(rs.getString("password"));
-                    System.out.println("ok");
                     adminList.add(admin);
                 }
                 for (int i = 0; i < 3; i++) {
@@ -37,10 +38,9 @@ public class AdminAccesser extends Connector{
                     System.out.println("Enter password: ");
                     password = scanner.nextLine();
                     for (Admin a : adminList) {
-                        if (a.getUsername().equalsIgnoreCase(username) && a.getPassword().equalsIgnoreCase(password)) {
+                        if (a.getUsername().equalsIgnoreCase(username) && a.getPassword().equalsIgnoreCase(md5(password))) {
                             return true;
                         }
-                        System.err.println("invalid");
                     }
 
                 }
@@ -51,5 +51,52 @@ public class AdminAccesser extends Connector{
         return false;
     }
 
+    public int insert(){
+        Connection conn = getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "INSERT INTO admin(username, password) VALUES (?,?)";
+        int id = 0;
+        if (conn != null){
+            try {
+                conn.setAutoCommit(false);
+                ps = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+                Admin admin = new Admin();
+                admin.register();
+                ps.setString(1,admin.getUsername());
+                ps.setString(2,md5(admin.getPassword()));
+                System.out.println("decode: " + admin.getPassword());
+                System.out.println("Pass: " + md5(admin.getPassword()));
+                ps.executeUpdate();
+                rs= ps.getGeneratedKeys();
+                adminList.add(admin);
+                if (rs.next()){
+                    id = rs.getInt(1);
+                }
+                conn.commit();
+                return id;
+            } catch (SQLException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public String md5(String c){
+        try {
+            MessageDigest md = MessageDigest.getInstance("md5");
+            md.update(c.getBytes(StandardCharsets.UTF_8));
+            String result = new String(md.digest());
+
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        AdminAccesser a = new AdminAccesser();
+        a.insert();
+    }
 
 }
