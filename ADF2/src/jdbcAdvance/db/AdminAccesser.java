@@ -65,8 +65,6 @@ public class AdminAccesser extends Connector{
                 admin.register();
                 ps.setString(1,admin.getUsername());
                 ps.setString(2,md5(admin.getPassword()));
-                System.out.println("decode: " + admin.getPassword());
-                System.out.println("Pass: " + md5(admin.getPassword()));
                 ps.executeUpdate();
                 rs= ps.getGeneratedKeys();
                 adminList.add(admin);
@@ -92,11 +90,6 @@ public class AdminAccesser extends Connector{
         } catch (NoSuchAlgorithmException e) {
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        AdminAccesser a = new AdminAccesser();
-        a.insert();
     }
 
 }

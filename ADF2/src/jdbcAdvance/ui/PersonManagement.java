@@ -9,40 +9,48 @@ public class PersonManagement {
     public static void main(String[] args) {
         PersonAccesser pa = new PersonAccesser();
         AdminAccesser aa = new AdminAccesser();
-        int choose;
-        if(aa.findAll()) {
-            do {
-                menu();
-                System.out.println("Choose: ");
-                choose = Integer.parseInt(scanner.nextLine());
+        int a;
+        System.out.println("1. Register");
+        System.out.println("2. login");
+        a = Integer.parseInt(scanner.nextLine());
+        if (a == 1) {
+            aa.insert();
+        } else if (a == 2) {
+            int choose;
+            if (aa.findAll()) {
+                do {
+                    menu();
+                    System.out.println("Choose: ");
+                    choose = Integer.parseInt(scanner.nextLine());
 
-                switch (choose) {
-                    case 1:
-                        pa.insert();
-                        break;
-                    case 2:
-                        pa.updateById();
-                        break;
-                    case 3:
-                        pa.deleteById();
-                        break;
-                    case 4:
-                        pa.searchById();
-                        break;
-                    case 5:
-                        pa.findAll();
-                        break;
-                    case 6:
-                        System.out.println("Bye!");
-                        break;
-                    default:
-                        System.err.println("invalid!!!");
-                        break;
-                }
+                    switch (choose) {
+                        case 1:
+                            pa.insert();
+                            break;
+                        case 2:
+                            pa.updateById();
+                            break;
+                        case 3:
+                            pa.deleteById();
+                            break;
+                        case 4:
+                            pa.searchById();
+                            break;
+                        case 5:
+                            pa.findAll();
+                            break;
+                        case 6:
+                            System.out.println("Bye!");
+                            break;
+                        default:
+                            System.err.println("invalid!!!");
+                            break;
+                    }
 
-            } while (choose != 6);
+                } while (choose != 6);
+            }
+            System.err.println("err!!!");
         }
-        System.err.println("err!!!");
     }
     public static void menu(){
         System.out.println("=====================================");
